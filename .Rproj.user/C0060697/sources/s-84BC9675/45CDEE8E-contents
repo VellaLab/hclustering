@@ -1,0 +1,246 @@
+# install.packages("reshape2")
+# install.packages("dplyr")
+# install.packages("ggpubr")
+# install.packages("ggpval")
+# install.packages("gridExtra")
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+library(reshape2)
+library(ggprism)
+library(patchwork)
+library(magrittr)
+library(ggpval)
+library(gridExtra)
+theme_set(theme_bw())
+dodge <- position_dodge(.1)
+update.packages(checkBuilt = TRUE)
+install.packages("car", dependencies=TRUE)
+
+dev.off()
+getwd()
+
+library(reshape2)
+
+Bcell_data <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/B cells/CSV/B cell subsample.csv")
+
+Bcells <- Bcell_data
+
+
+Lymp_DLBCLNA <-na.omit(Lymp_DLBCLNA)
+
+Bcells$Treated <- factor(Bcells$Treated, levels=c("Yes", "No"))
+
+
+#Select only the columns that we're interested in by using the "select" function with "matches"
+Bcell_CLL <- select(B_cell, matches("k20"))
+Lymphocyte_MC <- colnames(CD4_iNHL.data)
+
+#subset observation of interest for boxplot
+Bcells_CCL <- Bcells[(Bcells$group == "CLL"), ]
+Bcells_DLBCL <- Bcells[(Bcells$group == "DLBCL"), ]
+Bcells_iNHL <- Bcells[(Bcells$group == "iNHL"), ]
+Bcells_Healthycohort <- Bcells[(Bcells$group == "Healthy"), ]
+
+
+#organization data for new data frame
+# Lymphocytes_iNHL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/Lymphocytes/Lymphocyte boxplot/Lymphocyte_iNHL.csv")
+# Lymphocytes_DLBCL <-read.csv("//Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/Lymphocytes/Lymphocyte boxplot/Lymphocyte_DLBCL.csv")
+# Lymphocytes_CLL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/Lymphocytes/Lymphocyte boxplot/Lymphocytes_CLL.csv")
+# Bcell_CLL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/B cells/CSV/B cells_CLL.csv")
+Bcell_DLBCL <- read.csv("./data/Bcells-DLBCL.csv")
+# Bcell_iNHL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/B cells/CSV/B cells_iNHL.csv")
+# CD45cells_iNHL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/CD45+ cells-Leukocytes/CSV/CD45 boxplots/iNHL/CD45cells_iNHL.csv")
+# CD45cells_CLL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/CD45+ cells-Leukocytes/CSV/CD45 boxplots/CLL/CD45cells_CLL.csv")
+# CD45cells_DLBCL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/CD45+ cells-Leukocytes/CSV/CD45 boxplots/DLBCL/CD45cells_DLBCL.csv")
+
+# dataframe for newly analyzed data
+# Lymphocytes_CLL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/Lymphocytes/CSV/Lympho-CLL.csv")
+# Lymphocytes_DLBCL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/Lymphocytes/CSV/Lympho-DLBCL.csv")
+# Lymphocytes_iNHL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/Lymphocytes/CSV/Lympho-iNHL.csv")
+# CD45_CLL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/CD45+ cells-Leukocytes/CSV/CD45-CLL.csv")
+# CD45_DLBCL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/CD45+ cells-Leukocytes/CSV/CD45-DLBCL.csv")
+# CD45_iNHL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/CD45+ cells-Leukocytes/CSV/CD45-iNHL.csv")
+# CD4_CLL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/CD4 boxplot/CSV/CD4-CLL.csv")
+# CD4_DLBCL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/CD4 boxplot/CSV/CD4-DLBCL.csv")
+# CD4_iNHL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/CD4 boxplot/CSV/CD4-iNHL.csv")
+# Bcell_CLL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/B cells/CSV/Bcell-CLL.csv")
+# Bcell_DLBCL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/B cells/CSV/Bcells-DLBCL.csv")
+# Bcell_iNHL <- read.csv("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/B cells/CSV/Bcell-iNHL.csv")
+
+
+
+#Use the following code to group data
+dataframe <- Bcell_DLBCL
+dataframe$rbd_igg_posneg <- factor(dataframe$rbd_igg_posneg, levels = unique(dataframe$rbd_igg_posneg))
+
+dataframe <- dataframe %>% group_by(rbd_igg_posneg) %>%
+  arrange(desc(rbd_igg_posneg))
+tdf <- t(dataframe)
+
+# use thius code to selectn specific observations in the dataframe
+tdf_CLL <- tdf[ which (tdf$Treated == "No"), ]
+
+# code gives you dataframe with the number of positive obs
+ndf <- subset(df, rbd_igg_posneg = "Positive")
+
+# the code reads column 1, row 2 to 21. 
+tdf[2:21,1]
+
+New.df <- data.frame (cluster = as.character(rep(c('01', '02', '03', '04', '05', '06', '07', '08', '09', '10'))),
+                      percent = as.numeric(c(tdf[2:11,])),
+                      rbd_igg_status = c(rep("Healthy", times = 230),rep("Positive", times = 50), rep("Negative", times = 120)))
+
+
+#Select only the columns that we're interested in by using the "select" function with "matches"
+Bcell_C1 <- New.df[(New.df$cluster == '01'), ] 
+fsom_mcfeatures <- colnames(Bcellfeatures_NA)
+
+#for melting dataframe
+df.m <- melt(New.df, id.vars = "percent",
+             variable.name = "rbd_igg_status",
+             value.name = "cluster")
+df.m <- melt(New.df, variable.name = "rbd_igg_status")
+
+
+
+# Pairwise comparison against reference
+df_pvalue <- compare_means(percent ~ cluster,  data = New.df)
+
+# Visualize: Specify the comparisons you want
+my_comparisons <- list(c('Healthy', 'Positive'), c('Healthy', 'Negative'), c('Positive', 'Negative'))
+
+
+#calculate p_value
+  df_p_val <- New.df %>% 
+  rstatix::group_by(cluster) %>% 
+  rstatix::wilcox_test (percent ~ rbd_igg_status)
+  # %>% 
+  # rstatix::adjust_pvalue(p.col = "p") %>%
+  # rstatix::add_significance(p.col = "p.adj") %>% 
+  # rstatix::add_xy_position()
+
+  p <- ggplot(New.df, aes(x = factor(cluster), y = percent)) + 
+    geom_boxplot(width = 0.2) +
+    theme_prism() + 
+    coord_cartesian(ylim = c(0, 45)) + 
+    scale_y_continuous(breaks = seq(0, 45, 5), expand = c(0, 0))
+  
+  p + add_pvalue(df_p_val, 
+                 y.position = c(44, 41, 44),
+                 bracket.shorten = c(0.025, 0, 0.025))
+
+#write data frame as CSV
+  write.csv(df_p_val, "/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0_ New analysis/CD4 boxplot/Stat table.csv", row.names = FALSE)
+  
+  #export dataframe as pdf
+  pdf(df_p_val)
+  grid.table(df_p_val)
+  dev.off
+ 
+
+str(df_p_val)
+
+  ggplot(New.df, aes(x = rbd_igg_status, y = percent)) +
+    add_pvalue(df_p_val,
+               label="p.adj.signif",
+               y.position = unlist(lapply(seq_along(df_p_val$cluster), function (i) {
+                 clust <- as.numeric(df_p_val$cluster)[i]
+                 clusters = as.numeric(unlist(New.df$cluster))
+                 clustered <- New.df %>% filter(clusters == clust)
+                 maxed <- max(clustered$percent)
+                 
+                 if (i %% 3 == 0) {
+                   return(maxed*1.05)
+                 }
+                 if (i %% 3 == 1) {
+                   return(maxed*1.05)
+                 }
+                 if (i %% 3 == 2) {
+                   return(maxed*1.15)
+                 }
+               })),
+               bracket.shorten = rep(c(0.25, 0, 0.25), 10)
+    ) +
+  geom_boxplot(aes(rbd_igg_status, percent, fill = rbd_igg_status, col = rbd_igg_status), width = 0.75) +
+  facet_wrap(~cluster, scales = "free" ) +
+  scale_fill_manual(values = c(Healthy = 'dark grey', 
+                               Negative = 'orange', 
+                               Positive = 'light blue')) + 
+  scale_colour_manual(values = c(Healthy = 'black', 
+                                 Negative = 'black',
+                                 Positive = 'black')) +
+  geom_dotplot(binaxis='y',
+  stackdir='center',
+  dotsize = .01,
+  position = position_dodge(.1), binwidth = 0.75) +
+  aes() +
+  scale_y_continuous(limits = c()) + 
+  #stat_compare_means(df_p_val, aes(group=rbd_igg_status)) + #Add pairwise comparisons p-value
+  #stat_compare_means() + #Add global p-value
+  labs(title="Box Plot - NT-iNHL -  % Lymphocyte participation",
+       x="Cluster",y="% Participation") +
+  theme_bw (base_size = 20) + theme(panel.grid.major.x = element_line())
+
+
+Lymphocyte_iNHL.data_plot <- ggplot(New.lymphocyte_iNHL, aes(x = cluster, y = percent)) +
+  geom_boxplot() +
+  geom_dotplot(binaxis='y',
+               stackdir='center',
+               dotsize = .5,
+               position = dodge,
+               aes(fill = rbd_igg_status)) +
+  theme_bw(base_size = 20) + theme(panel.grid.major = element_blank(), 
+                                   panel.grid.minor = element_blank(), 
+                                   legend.position = "none") +
+  labs(x="Cluster", y="% Participation of lymphocytes")
+  ggtitle("% Lymphocyte cluster participation")
+                                
+
+
+
+  Lymphocyte_plot <- ggplot(New.lymphocyte_iNHL, aes(x = cluster, y = percent, fill = rbd_igg_status)) +
+    geom_boxplot() +
+    geom_dotplot(binaxis='y',
+                 stackdir='center',
+                 dotsize = .25,
+                 position = dodge,
+                 aes()) +
+    scale_y_continuous() +
+    labs(title="Box Plot - % Lymphocyte participation",
+         x="Cluster",y="% Participation") +
+    theme_gray(base_size = 20)
+  ggsave(Lymphocyte_plot, filename=paste("/Users/kumashiek/Library/CloudStorage/OneDrive-Children'sHospitalofPhiladelphia/Lymphoma data/Disease categorization 2.0/Lymphocytes/Lympfocyte boxplot", ".pdf"))
+  
+  
+  New.lymphocyte_iNHL <- data.frame(
+    cluster = as.character(rep(c('K-16', 'K-17', 'K-18', 'K-19', 'K-20'))),
+    percent = as.numeric(c(tdf[17:21,])),
+    rbd_igg_status = c(rep("Healthy", times = 23), rep("Positive", times = 16), rep("Negative", times = 8)))
+  
+
+
+warnings()
+
+
+##Create individual box plots ----
+# Change limits if off-scale
+# Un-comment the pdf line and dev.off() line if you want to save this plot
+# pdf("box_freq_data_boxplot.pdf")
+
+
+
+ggplot(Treated.data, aes(rbd_igg_posneg, k20.01.percent_total)) +
+  geom_boxplot() +
+  geom_dotplot(binaxis='y',
+               stackdir='center',
+               dotsize = .5,
+               position = dodge,
+               aes(fill = rbd_igg_posneg)) +
+  theme(legend.position = "none") +
+  scale_y_continuous(limits=c(0,100)) +
+  labs(title="Box Plot - Treated", x="rbd_IgG response",y="% tatal")
+
+# dev.off()
+dev.off()
+

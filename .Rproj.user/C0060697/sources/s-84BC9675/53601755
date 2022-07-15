@@ -1,0 +1,26 @@
+{
+    "id": "53601755",
+    "path": "~/source/repos/hclustering/gavin_autofcgating_v2.R",
+    "project_path": "gavin_autofcgating_v2.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1657643798129.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "293,23",
+        "scrollLine": "288"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1657645422,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1657645422330,
+    "read_only": false,
+    "read_only_alternatives": []
+}
